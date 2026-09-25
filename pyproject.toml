@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "legalrag"
+version = "0.1.0"
+description = "RAG system for legal documents (Hindi et al. architecture reference implementation)"
+requires-python = ">=3.11"
+dependencies = [
+    "PyYAML>=6.0",
+    "pdfplumber>=0.10.0",
+    "sentence-transformers>=2.2.0,<3.0.0",
+    "transformers<4.40.0",
+    "einops>=0.7.0",
+    "faiss-cpu>=1.7.4",
+    "rank_bm25>=0.2.2",
+    "numpy>=1.24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,128 @@
+ingest:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  chunks_file: chunks.jsonl
+  supported_extensions: [.pdf, .txt, .md]
+  categories:
+    - name: acts
+      path: acts
+      default_jurisdiction: India
+      chunking_strategy: pattern
+      chunking_preset: acts
+      citation_extraction: false
+    - name: constitution
+      path: constitution
+      default_jurisdiction: India
+      chunking_strategy: pattern
+      chunking_preset: constitution
+      citation_extraction: false
+    - name: judgments
+      path: judgments
+      default_jurisdiction: India
+      chunking_strategy: sentence     # configurable — override via sidecar if needed
+      chunking_preset: null
+      citation_extraction: true
+    - name: contracts
+      path: contracts
+      default_jurisdiction: ""        # inferred from sidecar; unknown by default
+      chunking_strategy: pattern
+      chunking_preset: contracts
+      citation_extraction: true
+    - name: procedures
+      path: procedures
+      default_jurisdiction: India
+      chunking_strategy: pattern
+      chunking_preset: generic
+      citation_extraction: false
+    - name: legal_qa
+      path: legal_qa
+      default_jurisdiction: India
+      chunking_strategy: sentence
+      chunking_preset: null
+      citation_extraction: false
+
+chunking:
+  strategy: pattern            # global default: pattern | sentence
+  sentence:
+    max_chars: 1000
+    min_chars: 50
+  pattern:
+    delimiters:                # generic fallback (mirrors chunking.presets.generic)
+      - {pattern: '^[ \t]*(?:Section|Article)\s+\d+', level: 1}
+      - {pattern: '^[ \t]*\d+\.\d+\.\d+',             level: 3}
+      - {pattern: '^[ \t]*\d+\.\d+',                  level: 2}
+      - {pattern: '^[ \t]*\d+\.',                      level: 1}
+      - {pattern: '^[ \t]*\(\w+\)',                    level: 3}
+  use_sac: true                # Summary-Augmented Chunking master switch
+  sac_use_llm: false           # false = deterministic heuristic (offline, no network)
+  sac_summary_max_chars: 150
+  sac_llm_model: ""            # filled in M5 with an OpenRouter model string
+  presets:
+    generic:
+      delimiters:
+        - {pattern: '^[ \t]*(?:Section|Article)\s+\d+', level: 1}
+        - {pattern: '^[ \t]*\d+\.\d+\.\d+',             level: 3}
+        - {pattern: '^[ \t]*\d+\.\d+',                  level: 2}
+        - {pattern: '^[ \t]*\d+\.',                      level: 1}
+        - {pattern: '^[ \t]*\(\w+\)',                    level: 3}
+    acts:
+      delimiters:
+        - {pattern: '^[ \t]*(?:Chapter|Part)\s+[IVXLCDM\d]+', level: 1}
+        - {pattern: '^[ \t]*(?:Section)\s+\d+[A-Z]?',         level: 2}
+        - {pattern: '^[ \t]*\(\d+\)',                           level: 3}
+        - {pattern: '^[ \t]*\([a-z]\)',                         level: 4}
+        - {pattern: '^[ \t]*\([ivx]+\)',                        level: 5}
+    constitution:
+      delimiters:
+        - {pattern: '^[ \t]*(?:Part|Schedule)\s+[IVXLCDM]+[A-Z]?', level: 1}
+        - {pattern: '^[ \t]*(?:Article)\s+\d+[A-Z]?',               level: 2}
+        - {pattern: '^[ \t]*\(\d+\)',                                 level: 3}
+        - {pattern: '^[ \t]*\([a-z]\)',                               level: 4}
+    contracts:
+      delimiters:
+        - {pattern: '^[ \t]*[Aa]rticle\s+[IVXLCDM]+\b', level: 1}
+        - {pattern: '^[ \t]*[A-Z][A-Z\s]{4,}[A-Z]\b', level: 1}
+        - {pattern: '^[ \t]*(?:Section|§)\s+\d+', level: 2}
+        - {pattern: '^[ \t]*\d+\.\d+(?:\.\d+)*', level: 3}
+        - {pattern: '^[ \t]*\([a-z]\)', level: 4}
+    judgments_structured:      # optional preset for structured opinions w/ numbered paragraphs
+      delimiters:
+        - {pattern: '^[ \t]*\d+\.',    level: 1}
+        - {pattern: '^[ \t]*\([a-z]\)', level: 2}
+
+retrieval:
+  embedding_model: nomic-embed-text   # config value — never hardcoded; swapped in M2 ablation
+  embedding_batch_size: 32            # chunks per forward pass; keep low (≤32) on machines with ≤8 GiB RAM
+  index_dir: data/index
+  top_k: 10
+  rrf_k: 60                    # Reciprocal Rank Fusion smoothing constant
+  mmr_lambda: 0.7              # 1.0 = pure relevance, 0.0 = pure diversity
+  structural_boost_strength: 0.1
+  use_structural_boost: true
+  use_mmr: true
+
+generation:
+  provider: openrouter         # openrouter | ollama  (ollama = optional, lazy import)
+  model: anthropic/claude-sonnet-4-5   # OpenRouter model identifier
+  temperature: 0.2
+  max_tokens: 1024
+  ollama_base_url: ""          # set when provider: ollama (or via OLLAMA_BASE_URL env var)
+
+adaptive:
+  enabled: true
+  support_threshold: 1.0       # nominal; decision is deterministic in the support check
+  max_extra_rounds: 2          # extra retrieval rounds after the initial one
+
+evaluation:
+  k_values: [1, 3, 5, 10]     # largest value is the DRM retrieval depth
+  embedding_ablation_models: [nomic-embed-text]
+  enable_ragas_style: true
+  enable_claim_check: true
+  enable_failure_tags: true
+
+output:
+  newline: "\n"
+
+app:
+  host: 127.0.0.1
+  port: 8000
