@@ -15,6 +15,8 @@ import json
 import logging
 from pathlib import Path
 
+import numpy as np
+
 from .embedding import Embedder, NOMIC_DOCUMENT_PREFIX
 from .index import (
     BM25SparseIndex,
@@ -45,12 +47,20 @@ class IndexBuilder:
 
         self.model_name = self.retrieval_cfg.get("embedding_model", "nomic-embed-text")
         self.normalize = self.retrieval_cfg.get("embedding_normalize", True)
+        self.batch_size: int = int(self.retrieval_cfg.get("embedding_batch_size", 32))
         self.index_dir = Path(self.retrieval_cfg.get("index_dir", "data/index"))
         self.processed_dir = Path(self.ingest_cfg.get("processed_dir", "data/processed"))
         self.chunks_file = self.ingest_cfg.get("chunks_file", "chunks.jsonl")
         self.use_sac = bool(self.chunking_cfg.get("use_sac", True))
 
         self.embedder: Embedder | None = None  # Lazy init
+
+        # Cache of already-computed embeddings keyed by ordered tuple of chunk_ids.
+        # Lets _build_one reuse vectors for the merged index when its corpus is
+        # identical to an already-built per-category corpus, avoiding a duplicate
+        # forward pass through the (expensive) Nomic model.
+        # Entries are released after load_or_build() finishes (FIX 3).
+        self._embedding_cache: dict[tuple, np.ndarray] = {}
 
     def _init_embedder(self) -> None:
         if self.embedder is None:
@@ -140,6 +150,11 @@ class IndexBuilder:
                 force_rebuild=force_rebuild,
             )
 
+        # FIX 3: Release cached embedding arrays now that all indexes are built.
+        # The cache served its purpose (avoiding a duplicate Nomic forward pass for
+        # the merged index); holding on to it would waste memory unnecessarily.
+        self._embedding_cache.clear()
+
     def _build_one(
         self,
         name: str,
@@ -149,7 +164,14 @@ class IndexBuilder:
         doc_prefix: str,
         force_rebuild: bool,
     ) -> None:
-        """Build or skip a single index namespace."""
+        """Build or skip a single index namespace.
+
+        Embeddings are stored in ``self._embedding_cache`` keyed by the
+        ordered tuple of ``chunk_id`` values.  When a subsequent call (e.g.
+        the global ``_merged`` index) presents the exact same ordered corpus
+        as a previously built per-category index, the cached ``np.ndarray``
+        is reused directly — no second forward pass through the model.
+        """
         sac_suffix = "sac" if self.use_sac else "no_sac"
         namespace = f"{name}_{self.model_name}_{sac_suffix}"
         prefix = self.index_dir / namespace
@@ -164,47 +186,66 @@ class IndexBuilder:
             "index_version": INDEX_VERSION,
         }
 
-        # Check freshness
+        # Check freshness — skip rebuild if on-disk index matches fingerprints.
         if not force_rebuild:
-            # We just need to check dense_meta to see if it's fresh
             dense_meta = prefix_str + "_dense_meta.json"
             if Path(dense_meta).exists():
                 try:
-                    # Test load to validate metadata
-                    dummy = FAISSDenseIndex(1)
-                    dummy.read_meta(prefix_str + "_dense") # Just read, no full load needed to check
-                    
-                    # Manual check to avoid full load
-                    import json
-                    with open(dense_meta, 'r') as f:
+                    with open(dense_meta, "r", encoding="utf-8") as f:
                         stored = json.load(f)
-                    
-                    stale = False
-                    for k, v in expected_meta.items():
-                        if k in stored and stored[k] != v:
-                            stale = True
-                            break
-                            
+                    stale = any(
+                        k in stored and stored[k] != v
+                        for k, v in expected_meta.items()
+                    )
                     if not stale and stored.get("chunk_count") == len(chunks):
                         logger.info("[%s] Index is fresh, skipping rebuild.", name)
                         return
                 except Exception:
-                    pass
+                    pass  # Any read/parse error → fall through to rebuild
 
         logger.info("[%s] Building index for %d chunks...", name, len(chunks))
 
-        self._init_embedder()
-        assert self.embedder is not None
-
         texts = [c["text"] for c in chunks]
         doc_ids = [c["chunk_id"] for c in chunks]
+        cache_key = tuple(doc_ids)
 
-        # Embed with prefix and normalization
-        embeddings = self.embedder.encode(
-            texts,
-            normalize=self.normalize,
-            prompt_prefix=doc_prefix,
-        )
+        # FIX 2: Reuse already-computed embeddings when the corpus is identical
+        # to one built earlier in this session (e.g. merged == single category).
+        if cache_key in self._embedding_cache:
+            logger.info(
+                "[%s] Reusing cached embeddings from a previous index "
+                "(corpus is identical — no second embedding pass).",
+                name,
+            )
+            embeddings = self._embedding_cache[cache_key]
+        else:
+            # FIX 1: pass configured batch_size so sentence_transformers
+            # processes texts in controlled-size forward passes.
+            self._init_embedder()
+            assert self.embedder is not None
+            
+            # Avoid tokenizing all chunks at once, which causes massive memory spikes
+            # Process in outer blocks of 1000
+            import numpy as np
+            all_embeddings = []
+            outer_batch = 5000
+            for i in range(0, len(texts), outer_batch):
+                batch_texts = texts[i:i+outer_batch]
+                batch_emb = self.embedder.encode(
+                    batch_texts,
+                    normalize=self.normalize,
+                    prompt_prefix=doc_prefix,
+                    batch_size=self.batch_size,
+                )
+                all_embeddings.append(batch_emb)
+            
+            embeddings = np.vstack(all_embeddings)
+            
+            # Store for potential reuse by the merged index.
+            self._embedding_cache[cache_key] = embeddings
+
+        self._init_embedder()
+        assert self.embedder is not None
 
         dense = FAISSDenseIndex(self.embedder.dimension)
         dense.add(embeddings, doc_ids)
@@ -215,3 +256,4 @@ class IndexBuilder:
         sparse.save(prefix_str + "_sparse", metadata=expected_meta)
 
         logger.info("[%s] Saved dense and sparse indexes to %s", name, namespace)
+

@@ -95,18 +95,76 @@ def test_pattern_chunker_acts_preset():
 
 def test_pattern_chunker_constitution():
     delimiters = [
-        {"pattern": r"^[ \t]*(?:Part|Schedule)\s+[IVX]+", "level": 1},
-        {"pattern": r"^[ \t]*(?:Article)\s+\d+", "level": 2}
+        {"pattern": r"(?i)^[ \t]*Appendix\s+[IVXLCDM]+[A-Z]?\s*$", "level": 0},
+        {"pattern": r"(?i)^[ \t]*(?:(?:Part|Schedule)\s+[IVXLCDM]+[A-Z]?|[a-z]+\s+Schedule)", "level": 1},
+        {"pattern": r"^[ \t]*(?:Article)\s+\d+", "level": 2},
+        {"pattern": r"^[ \t]*\d+[A-Z]?\.", "level": 2}
     ]
     c = PatternChunker(delimiters)
-    text = "Part III\nRights\nArticle 21\nLife.\nSchedule I\nStates."
-    chunks = c.chunk("doc", text)
-    assert len(chunks) == 3
-    assert chunks[0].section == "Part III"
-    assert chunks[1].section == "Article 21"
-    assert chunks[1].parent == "Part III"
-    assert chunks[2].section == "Schedule I"
-    assert chunks[2].parent is None
+    
+    # Test 1: Standard case with collision regression and TOC bleeding
+    text1 = (
+        "APPENDIX III .Declaration under article 370(3) of the Constitution.\n"
+        "PART III\nFundamental Rights\n21A. Right to education.\n"
+        "SEVENTH SCHEDULE\nLists\n21. Piracies and crimes committed on the high seas...\n"
+        "APPENDIX I\ntext inside appendix\n"
+        "PART III\ntext inside internal part\n"
+        "14. Nazirganja 48 Boda Haldibari 73.27\n"
+        "21. Another row"
+    )
+    chunks1 = c.chunk("doc", text1)
+    
+    # chunks1[0] = orphaned TOC text
+    # chunks1[1] = PART III
+    # chunks1[2] = 21A (under PART III)
+    # chunks1[3] = SEVENTH SCHEDULE
+    # chunks1[4] = 21 (under SEVENTH SCHEDULE)
+    # chunks1[5] = APPENDIX I
+    # chunks1[6] = PART III (under APPENDIX I)
+    # chunks1[7] = 14 (under PART III which is under APPENDIX I)
+    # chunks1[8] = 21 (under PART III which is under APPENDIX I)
+    
+    assert len(chunks1) == 9
+    
+    # TOC regression test
+    assert chunks1[0].section is None  # The TOC text is orphaned
+    
+    assert chunks1[1].section == "PART III"
+    assert chunks1[2].section == "21A"
+    assert chunks1[2].parent == "PART III"
+    assert chunks1[2].hierarchy_path == ["PART III", "21A"]
+    
+    assert chunks1[3].section == "SEVENTH SCHEDULE"
+    assert chunks1[4].section == "21"
+    assert chunks1[4].parent == "SEVENTH SCHEDULE"
+    assert chunks1[4].hierarchy_path == ["SEVENTH SCHEDULE", "21"]
+    
+    # Collision regression test
+    assert chunks1[5].section == "APPENDIX I"
+    assert chunks1[5].hierarchy_path == ["APPENDIX I"]
+    
+    assert chunks1[6].section == "PART III"
+    assert chunks1[6].parent == "APPENDIX I"
+    assert chunks1[6].hierarchy_path == ["APPENDIX I", "PART III"]
+    
+    assert chunks1[7].section == "14"
+    assert chunks1[7].parent == "PART III"
+    assert chunks1[7].hierarchy_path == ["APPENDIX I", "PART III", "14"]
+    
+    assert chunks1[8].section == "21"
+    assert chunks1[8].parent == "PART III"
+    assert chunks1[8].hierarchy_path == ["APPENDIX I", "PART III", "21"]
+    
+    # Test 2: Case variants
+    text2 = "part iii\ndummy\n21. lower.\nSeventh Schedule\ndummy\n21. Camel.\nSchedule I\ndummy\n21. Roman."
+    chunks2 = c.chunk("doc", text2)
+    assert len(chunks2) == 6
+    assert chunks2[0].section == "part iii"
+    assert chunks2[1].parent == "part iii"
+    assert chunks2[2].section == "Seventh Schedule"
+    assert chunks2[3].parent == "Seventh Schedule"
+    assert chunks2[4].section == "Schedule I"
+    assert chunks2[5].parent == "Schedule I"
 
 def test_pattern_chunker_empty():
     c = PatternChunker()

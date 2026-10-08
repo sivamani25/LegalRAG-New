@@ -89,3 +89,54 @@ def test_chunk_store(tmp_path):
     
     assert len(new_store) == 2
     assert new_store.get("c1")["category"] == "acts"
+
+def test_faiss_dense_index_search():
+    dim = 4
+    index = FAISSDenseIndex(dimension=dim)
+    
+    # Use float32 to match FAISS expectations
+    embeddings = np.array([
+        [1.0, 0.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0, 0.0],
+        [0.0, 0.0, 1.0, 0.0]
+    ], dtype=np.float32)
+    doc_ids = ["doc1", "doc2", "doc3"]
+    index.add(embeddings, doc_ids)
+    
+    query = np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float32)
+    results = index.search(query, top_k=2)
+    
+    assert len(results) == 2
+    assert results[0][0] == "doc1"
+    assert results[0][1] == pytest.approx(1.0)
+    
+    # Check dim mismatch
+    bad_query = np.array([1.0, 0.0, 0.0], dtype=np.float32)
+    with pytest.raises(ValueError, match="Query dimension"):
+        index.search(bad_query)
+        
+    # Check empty index safely returns empty list
+    empty_index = FAISSDenseIndex(dimension=dim)
+    assert empty_index.search(query) == []
+
+def test_bm25_sparse_index_search():
+    index = BM25SparseIndex()
+    # Pad corpus so 'banana' appears in < 50% of docs, ensuring positive IDF in BM25Okapi
+    texts = ["apple banana", "apple orange", "banana banana", "kiwi", "grape", "mango"]
+    doc_ids = ["doc1", "doc2", "doc3", "doc4", "doc5", "doc6"]
+    
+    index.add(texts, doc_ids)
+    
+    results = index.search("banana", top_k=2)
+    # doc3 has "banana" twice, doc1 has it once
+    assert len(results) == 2
+    assert results[0][0] == "doc3"
+    assert results[1][0] == "doc1"
+    assert results[0][1] > results[1][1]
+    
+    # Check empty index safely returns empty list
+    empty_index = BM25SparseIndex()
+    assert empty_index.search("banana") == []
+    
+    # Check unknown token returns empty list (or no scores > 0)
+    assert index.search("unknown") == []

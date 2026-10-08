@@ -177,6 +177,9 @@ class VectorStore(ABC):
     def doc_ids(self) -> list[str]:
         """Ordered list of document IDs matching index positions."""
 
+    @abstractmethod
+    def search(self, query_embedding: np.ndarray, top_k: int = 5) -> list[tuple[str, float]]:
+        """Search for the *top_k* closest matches to *query_embedding*."""
 
 class SparseIndex(ABC):
     """Abstract sparse index (BM25 for M2)."""
@@ -198,6 +201,9 @@ class SparseIndex(ABC):
     def doc_ids(self) -> list[str]:
         """Ordered list of document IDs."""
 
+    @abstractmethod
+    def search(self, query: str, top_k: int = 5) -> list[tuple[str, float]]:
+        """Search for the *top_k* closest matches to *query*."""
 
 # ---------------------------------------------------------------------------
 # FAISS dense index
@@ -245,6 +251,31 @@ class FAISSDenseIndex(VectorStore):
 
     def read_meta(self, path_prefix: str) -> dict:
         return _read_meta(f"{path_prefix}_meta.json")
+
+    def search(self, query_embedding: np.ndarray, top_k: int = 5) -> list[tuple[str, float]]:
+        if self.index.ntotal == 0 or not self._doc_ids:
+            return []
+            
+        if query_embedding.ndim == 1:
+            query_embedding = query_embedding.reshape(1, -1)
+            
+        if query_embedding.shape[-1] != self.dimension:
+            raise ValueError(
+                f"Query dimension {query_embedding.shape[-1]} does not match "
+                f"index dimension {self.dimension}"
+            )
+            
+        distances, indices = self.index.search(
+            np.ascontiguousarray(query_embedding, dtype=np.float32), 
+            top_k
+        )
+        
+        results = []
+        for dist, idx in zip(distances[0], indices[0]):
+            if idx != -1:
+                results.append((self._doc_ids[idx], float(dist)))
+                
+        return results
 
 
 # ---------------------------------------------------------------------------
@@ -296,3 +327,23 @@ class BM25SparseIndex(SparseIndex):
 
     def read_meta(self, path_prefix: str) -> dict:
         return _read_meta(f"{path_prefix}_meta.json")
+
+    def search(self, query: str, top_k: int = 5) -> list[tuple[str, float]]:
+        if not self.bm25 or not self._doc_ids:
+            return []
+            
+        tokens = self._tokenize(query)
+        if not tokens:
+            return []
+            
+        scores = self.bm25.get_scores(tokens)
+        
+        # Sort indices descending by score
+        top_indices = np.argsort(scores)[::-1][:top_k]
+        
+        results = []
+        for idx in top_indices:
+            if scores[idx] > 0:
+                results.append((self._doc_ids[idx], float(scores[idx])))
+                
+        return results

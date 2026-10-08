@@ -61,6 +61,7 @@ class Embedder(ABC):
         *,
         normalize: bool = True,
         prompt_prefix: str = "",
+        batch_size: int = 32,
     ) -> np.ndarray:
         """Encode *texts* into dense vectors.
 
@@ -73,6 +74,10 @@ class Embedder(ABC):
             prompt_prefix: Prepended to every text before encoding.
                            Use ``NOMIC_DOCUMENT_PREFIX`` at index time and
                            ``NOMIC_QUERY_PREFIX`` at query time.
+            batch_size:    Number of texts per forward pass sent to the
+                           underlying model.  Controls peak RAM.  Sourced
+                           from ``retrieval.embedding_batch_size`` in
+                           config.yaml; defaults to 32.
 
         Returns:
             ``np.ndarray`` of shape ``(len(texts), self.dimension)``,
@@ -126,6 +131,7 @@ class SentenceTransformerEmbedder(Embedder):
         self._model_name = model_name
         hf_name = resolve_hf_name(model_name)
         self.model = SentenceTransformer(hf_name, trust_remote_code=True)
+        self.model.max_seq_length = 2048
 
     def encode(
         self,
@@ -133,6 +139,7 @@ class SentenceTransformerEmbedder(Embedder):
         *,
         normalize: bool = True,
         prompt_prefix: str = "",
+        batch_size: int = 32,
     ) -> np.ndarray:
         """Encode *texts*, optionally prefixing and normalising.
 
@@ -142,12 +149,18 @@ class SentenceTransformerEmbedder(Embedder):
 
         Normalisation is applied exactly once at this layer.  FAISS and BM25
         must not re-normalise.
+
+        ``batch_size`` controls how many texts are sent through the transformer
+        per forward pass.  Sourced from ``retrieval.embedding_batch_size`` in
+        config.yaml.  Smaller values reduce peak RAM at the cost of slightly
+        longer wall-clock time.
         """
         if prompt_prefix:
             texts = [prompt_prefix + t for t in texts]
         embeddings: np.ndarray = self.model.encode(
             texts,
             normalize_embeddings=normalize,
+            batch_size=batch_size,
         )
         return embeddings.astype(np.float32)
 
