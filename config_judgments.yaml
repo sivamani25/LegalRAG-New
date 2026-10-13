@@ -1,0 +1,167 @@
+adaptive:
+  enabled: true
+  max_extra_rounds: 2
+  support_threshold: 1.0
+app:
+  host: 127.0.0.1
+  port: 8000
+chunking:
+  pattern:
+    delimiters:
+    - level: 1
+      pattern: ^[ \t]*(?:Section|Article)\s+\d+
+    - level: 3
+      pattern: ^[ \t]*\d+\.\d+\.\d+
+    - level: 2
+      pattern: ^[ \t]*\d+\.\d+
+    - level: 1
+      pattern: ^[ \t]*\d+\.
+    - level: 3
+      pattern: ^[ \t]*\(\w+\)
+  presets:
+    acts:
+      delimiters:
+      - level: 1
+        pattern: ^[ \t]*(?:Chapter|Part)\s+[IVXLCDM\d]+
+      - level: 2
+        pattern: ^[ \t]*(?:Section)\s+\d+[A-Z]?
+      - level: 3
+        pattern: ^[ \t]*\(\d+\)
+      - level: 4
+        pattern: ^[ \t]*\([a-z]\)
+      - level: 5
+        pattern: ^[ \t]*\([ivx]+\)
+    constitution:
+      delimiters:
+      - level: 0
+        pattern: (?i)^[ \t]*Appendix\s+[IVXLCDM]+[A-Z]?\s*$
+      - level: 1
+        pattern: (?i)^[ \t]*(?:(?:Part|Schedule)\s+[IVXLCDM]+[A-Z]?|[a-z]+\s+Schedule)
+      - level: 2
+        pattern: ^[ \t]*(?:Article)\s+\d+[A-Z]?
+      - level: 2
+        pattern: ^[ \t]*\d+[A-Z]?\.
+      - level: 3
+        pattern: ^[ \t]*\(\d+\)
+      - level: 4
+        pattern: ^[ \t]*\([a-z]\)
+    contracts:
+      delimiters:
+      - level: 1
+        pattern: ^[ \t]*[Aa]rticle\s+[IVXLCDM]+\b
+      - level: 1
+        pattern: ^[ \t]*[A-Z][A-Z\s]{4,}[A-Z]\b
+      - level: 2
+        pattern: "^[ \\t]*(?:Section|\xC2\xA7)\\s+\\d+"
+      - level: 3
+        pattern: ^[ \t]*\d+\.\d+(?:\.\d+)*
+      - level: 4
+        pattern: ^[ \t]*\([a-z]\)
+    generic:
+      delimiters:
+      - level: 1
+        pattern: ^[ \t]*(?:Section|Article)\s+\d+
+      - level: 3
+        pattern: ^[ \t]*\d+\.\d+\.\d+
+      - level: 2
+        pattern: ^[ \t]*\d+\.\d+
+      - level: 1
+        pattern: ^[ \t]*\d+\.
+      - level: 3
+        pattern: ^[ \t]*\(\w+\)
+    judgments_structured:
+      delimiters:
+      - level: 1
+        pattern: ^[ \t]*\d+\.
+      - level: 2
+        pattern: ^[ \t]*\([a-z]\)
+  sac_llm_model: ''
+  sac_summary_max_chars: 150
+  sac_use_llm: false
+  sentence:
+    max_chars: 1000
+    min_chars: 50
+  strategy: pattern
+  use_sac: true
+evaluation:
+  embedding_ablation_models:
+  - nomic-embed-text
+  enable_claim_check: true
+  enable_failure_tags: true
+  enable_ragas_style: true
+  k_values:
+  - 1
+  - 3
+  - 5
+  - 10
+
+generation:
+  provider: openrouter
+  model: cohere/north-mini-code:free
+  fallback_model: poolside/laguna-xs-2.1:free
+  temperature: 0.2
+  max_tokens: 4096
+  ollama_base_url: ""
+ingest:
+  categories:
+  - chunking_preset: acts
+    chunking_strategy: pattern
+    citation_extraction: false
+    default_jurisdiction: India
+    name: acts
+    path: acts
+  - chunking_preset: constitution
+    chunking_strategy: pattern
+    citation_extraction: false
+    default_jurisdiction: India
+    name: constitution
+    path: constitution
+  - chunking_preset: null
+    chunking_strategy: sentence
+    citation_extraction: true
+    default_jurisdiction: India
+    name: judgments
+    path: judgments
+  - chunking_preset: contracts
+    chunking_strategy: pattern
+    citation_extraction: true
+    default_jurisdiction: ''
+    name: contracts
+    path: contracts
+  - chunking_preset: generic
+    chunking_strategy: pattern
+    citation_extraction: false
+    default_jurisdiction: India
+    name: procedures
+    path: procedures
+  - chunking_preset: null
+    chunking_strategy: sentence
+    citation_extraction: false
+    default_jurisdiction: India
+    name: legal_qa
+    path: legal_qa
+  chunks_file: chunks.jsonl
+  processed_dir: data/pilot/processed/judgments-full
+  raw_dir: data/raw
+  supported_extensions:
+  - .pdf
+  - .txt
+  - .md
+output:
+  newline: '
+
+    '
+retrieval:
+  citation_boost_strength: 0.05
+  embedding_batch_size: 32
+  embedding_model: nomic-embed-text
+  hierarchy_boost_strength: 0.05
+  index_dir: data/index/judgments
+  mmr_lambda: 0.7
+  rrf_k: 10
+  structural_boost_strength: 0.1
+  top_k: 10
+  use_citation_boost: true
+  use_hierarchy_boost: true
+  use_mmr: true
+  use_structural_boost: true

@@ -1,10 +1,15 @@
 import pytest
 import numpy as np
+from pathlib import Path
+
+import yaml
+
 from legalrag.retrieval.pipeline import (
     extract_explicit_references,
     is_structural_match,
     is_hierarchy_match,
-    HybridRetriever
+    HybridRetriever,
+    _rrf_score,
 )
 from legalrag.retrieval.index import ChunkStore
 
@@ -254,3 +259,33 @@ def test_metadata_candidate_expansion_article_368(mock_retriever):
     
     ids = [r[0] for r in res]
     assert "d9" in ids
+
+
+# ---------------------------------------------------------------------------
+# RRF fusion regression tests (M6 judgment retrieval diagnosis)
+# ---------------------------------------------------------------------------
+
+def test_rrf_score_rank_and_k_sensitivity():
+    # A worse (higher) rank contributes less.
+    assert _rrf_score(0, 60) > _rrf_score(1, 60) > _rrf_score(10, 60)
+    # A smaller rrf_k makes each channel's top ranks count more (less
+    # flattening), so a strong single-channel hit is not buried by mediocre
+    # dual-channel hits (the diagnosed M6 judgment failure mode).
+    assert _rrf_score(0, 10) > _rrf_score(0, 60)
+    spread_10 = _rrf_score(0, 10) - _rrf_score(50, 10)
+    spread_60 = _rrf_score(0, 60) - _rrf_score(50, 60)
+    assert spread_10 > spread_60
+
+
+def test_judgment_config_uses_tuned_rrf_k():
+    root = Path(__file__).resolve().parents[1]
+    cfg = yaml.safe_load((root / "config_judgments.yaml").read_text(encoding="utf-8"))
+    # Lowered 60 -> 10 so strong single-channel hits are not flattened.
+    assert cfg["retrieval"]["rrf_k"] == 10
+
+
+def test_acts_and_constitution_rrf_k_unchanged():
+    root = Path(__file__).resolve().parents[1]
+    for name in ("config.yaml", "config_acts_eval.yaml"):
+        cfg = yaml.safe_load((root / name).read_text(encoding="utf-8"))
+        assert cfg["retrieval"]["rrf_k"] == 60

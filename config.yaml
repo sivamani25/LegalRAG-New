@@ -101,13 +101,14 @@ retrieval:
   use_structural_boost: true
   use_mmr: true
 
+
 generation:
-  provider: openrouter         # openrouter | ollama  (ollama = optional, lazy import)
-  model: anthropic/claude-sonnet-4-5   # OpenRouter model identifier
+  provider: openrouter
+  model: cohere/north-mini-code:free
+  fallback_model: poolside/laguna-xs-2.1:free
   temperature: 0.2
   max_tokens: 1024
-  ollama_base_url: ""          # set when provider: ollama (or via OLLAMA_BASE_URL env var)
-
+  ollama_base_url: ""
 adaptive:
   enabled: true
   support_threshold: 1.0       # nominal; decision is deterministic in the support check

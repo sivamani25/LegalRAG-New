@@ -1,4 +1,8 @@
+from pathlib import Path
+
 import pytest
+import yaml
+
 from legalrag.ingest.chunker import (
     SentenceChunker, PatternChunker, Chunker, make_chunk_id, Chunk
 )
@@ -231,3 +235,107 @@ def test_pattern_chunker_cuad_contracts():
     assert chunks[1].section == "Section 1"
     assert chunks[1].parent == "ARTICLE IV"
     assert chunks[1].hierarchy_path == ["ARTICLE IV", "Section 1"]
+
+
+# ---------------------------------------------------------------------------
+# Acts preset regression tests (delimiters from config_acts_eval.yaml)
+# ---------------------------------------------------------------------------
+
+def _acts_delimiters():
+    cfg = yaml.safe_load(
+        (Path(__file__).resolve().parents[1] / "config_acts_eval.yaml").read_text(
+            encoding="utf-8"
+        )
+    )
+    return cfg["chunking"]["presets"]["acts"]["delimiters"]
+
+
+def _acts_chunk(text):
+    return PatternChunker(_acts_delimiters()).chunk(
+        "it_act_2000", text, "acts", "India"
+    )
+
+
+def _by_section(chunks):
+    return {c.section: c for c in chunks if c.section is not None}
+
+
+def test_acts_numbered_section_headings():
+    text = (
+        "79. Exemption from liability of intermediary in certain cases.\n"
+        "Body of section 79.\n"
+        "79A. Central Government to notify Examiner of Electronic Evidence.\n"
+        "Body of section 79A.\n"
+    )
+    secs = _by_section(_acts_chunk(text))
+    assert "79" in secs
+    assert "79A" in secs
+    assert secs["79"].text.startswith("Exemption from liability")
+    assert secs["79A"].text.startswith("Central Government to notify Examiner")
+
+
+def test_acts_amendment_footnotes_are_not_sections():
+    text = (
+        "79. Exemption from liability of intermediary in certain cases.\n"
+        "1. 17th October, 2000, vide notification No. G.S.R. 788 (E), "
+        "dated the 17th October, 2000.\n"
+        "2. Subs. by Act 10 of 2009, s. 3, for sub-section (4) (w.e.f. 27-10-2009).\n"
+    )
+    chunks = _acts_chunk(text)
+    sections = [c.section for c in chunks]
+    # Amendment footnotes must NOT become section boundaries.
+    assert "1" not in sections
+    assert "2" not in sections
+    assert sections == ["79"]
+    # Their text is preserved inside the enclosing section body.
+    assert "17th October" in chunks[0].text
+    assert "Subs. by Act 10 of 2009" in chunks[0].text
+
+
+def test_acts_gazette_part_citation_not_heading():
+    text = (
+        "PART II\nELECTRONIC RECORDS\n"
+        "Part II, sec. 3(ii).\n"
+        "2. Definitions.\u2014In this Act, unless the context otherwise requires,\n"
+    )
+    chunks = _acts_chunk(text)
+    part_like = [c for c in chunks if c.section and c.section.lower().startswith("part")]
+    assert len(part_like) == 1                  # only the genuine PART II heading
+    assert part_like[0].section == "PART II"
+    # The mixed-case gazette citation must not create a boundary / parent.
+    assert all("Part II" not in c.hierarchy_path for c in chunks)
+    assert any("Part II, sec. 3(ii)." in c.text for c in chunks)
+
+
+def test_acts_hierarchy_sections_subsections_clauses():
+    text = (
+        "79. Exemption from liability of intermediary in certain cases.\n"
+        "(1) Sub-section one.\n"
+        "(a) Clause a.\n"
+        "(i) Nested sub-clause i.\n"
+        "(2) Sub-section two.\n"
+    )
+    secs = _by_section(_acts_chunk(text))
+    assert secs["79"].hierarchy_path == ["79"]
+    assert secs["1"].parent == "79"
+    assert secs["1"].hierarchy_path == ["79", "1"]
+    assert secs["a"].parent == "1"
+    assert secs["a"].hierarchy_path == ["79", "1", "a"]
+    assert secs["i"].parent == "a"
+    assert secs["i"].hierarchy_path == ["79", "1", "a", "i"]
+    assert secs["2"].parent == "79"
+    assert secs["2"].hierarchy_path == ["79", "2"]
+
+
+def test_acts_genuine_chapter_and_omitted_preserved():
+    text = (
+        "CHAPTER I\nPRELIMINARY\n"
+        "1. Short title, extent, commencement and application.\n"
+        "2. Definitions.\u2014In this Act, unless the context otherwise requires,\n"
+        "20. [Omitted.].\n"
+    )
+    secs = _by_section(_acts_chunk(text))
+    assert "CHAPTER I" in secs
+    assert secs["1"].parent == "CHAPTER I"
+    assert secs["1"].hierarchy_path == ["CHAPTER I", "1"]
+    assert "20" in secs                         # [Omitted.] section still detected

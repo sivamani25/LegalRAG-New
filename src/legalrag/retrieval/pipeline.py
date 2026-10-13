@@ -67,6 +67,15 @@ def is_hierarchy_match(chunk_meta: dict, refs: List[Tuple[str, str]]) -> bool:
     return False
 
 
+def _rrf_score(rank: int, rrf_k: int) -> float:
+    """Reciprocal-rank-fusion contribution for a 0-based *rank*.
+
+    A smaller ``rrf_k`` makes each channel's top ranks count more, so a strong
+    single-channel hit is not flattened below mediocre dual-channel hits.
+    """
+    return 1.0 / (rrf_k + rank + 1)
+
+
 class HybridRetriever:
     def __init__(self, config: dict, category: str = "_merged"):
         self.config = config
@@ -118,10 +127,10 @@ class HybridRetriever:
         
         rrf_scores = {}
         for rank, (doc_id, _) in enumerate(dense_results):
-            rrf_scores[doc_id] = rrf_scores.get(doc_id, 0.0) + 1.0 / (self.rrf_k + rank + 1)
-            
+            rrf_scores[doc_id] = rrf_scores.get(doc_id, 0.0) + _rrf_score(rank, self.rrf_k)
+
         for rank, (doc_id, _) in enumerate(sparse_results):
-            rrf_scores[doc_id] = rrf_scores.get(doc_id, 0.0) + 1.0 / (self.rrf_k + rank + 1)
+            rrf_scores[doc_id] = rrf_scores.get(doc_id, 0.0) + _rrf_score(rank, self.rrf_k)
             
         refs = extract_explicit_references(query)
         

@@ -1,0 +1,1162 @@
+{
+  "generated_at": "2026-10-13T09:13:11.812726+00:00",
+  "k_values": [
+    1,
+    3,
+    5,
+    10
+  ],
+  "categories": {
+    "acts": {
+      "num_cases": 10,
+      "index_dir": "data/pilot/index/acts",
+      "metrics_by_k": {
+        "1": {
+          "precision": 0.6,
+          "recall": 0.6,
+          "mrr": 0.6,
+          "map": 0.6
+        },
+        "3": {
+          "precision": 0.3333333333333333,
+          "recall": 1.0,
+          "mrr": 0.7833333333333333,
+          "map": 0.7833333333333333
+        },
+        "5": {
+          "precision": 0.2,
+          "recall": 1.0,
+          "mrr": 0.7833333333333333,
+          "map": 0.7833333333333333
+        },
+        "10": {
+          "precision": 0.1,
+          "recall": 1.0,
+          "mrr": 0.7833333333333333,
+          "map": 0.7833333333333333
+        }
+      },
+      "per_query": [
+        {
+          "query": "Under the Information Technology Act, 2000, what is the punishment for tampering with computer source documents?",
+          "relevant_ids": [
+            "acts/information_technology_act_2000/448"
+          ],
+          "retrieved_ids": [
+            "acts/information_technology_act_2000/86",
+            "acts/information_technology_act_2000/448",
+            "acts/information_technology_act_2000/89",
+            "acts/information_technology_act_2000/91",
+            "acts/information_technology_act_2000/382",
+            "acts/information_technology_act_2000/92",
+            "acts/information_technology_act_2000/107",
+            "acts/information_technology_act_2000/94",
+            "acts/information_technology_act_2000/90",
+            "acts/information_technology_act_2000/454"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 0.5,
+          "map@3": 0.5,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 0.5,
+          "map@5": 0.5,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "map@10": 0.5
+        },
+        {
+          "query": "What is the punishment under the IT Act, 2000 for identity theft by using another person's electronic signature or password?",
+          "relevant_ids": [
+            "acts/information_technology_act_2000/455"
+          ],
+          "retrieved_ids": [
+            "acts/information_technology_act_2000/90",
+            "acts/information_technology_act_2000/91",
+            "acts/information_technology_act_2000/455",
+            "acts/information_technology_act_2000/553",
+            "acts/information_technology_act_2000/94",
+            "acts/information_technology_act_2000/196",
+            "acts/information_technology_act_2000/456",
+            "acts/information_technology_act_2000/95",
+            "acts/information_technology_act_2000/128",
+            "acts/information_technology_act_2000/89"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 0.3333333333333333,
+          "map@3": 0.3333333333333333,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 0.3333333333333333,
+          "map@5": 0.3333333333333333,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 0.3333333333333333,
+          "map@10": 0.3333333333333333
+        },
+        {
+          "query": "What does Section 67 of the Information Technology Act, 2000 provide for publishing or transmitting obscene material in electronic form?",
+          "relevant_ids": [
+            "acts/information_technology_act_2000/471"
+          ],
+          "retrieved_ids": [
+            "acts/information_technology_act_2000/94",
+            "acts/information_technology_act_2000/471",
+            "acts/information_technology_act_2000/475",
+            "acts/information_technology_act_2000/95",
+            "acts/information_technology_act_2000/472",
+            "acts/information_technology_act_2000/96",
+            "acts/information_technology_act_2000/473",
+            "acts/information_technology_act_2000/584",
+            "acts/information_technology_act_2000/474",
+            "acts/information_technology_act_2000/606"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 0.5,
+          "map@3": 0.5,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 0.5,
+          "map@5": 0.5,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "map@10": 0.5
+        },
+        {
+          "query": "Under Section 72 of the IT Act, 2000, what is the penalty for disclosing secured electronic records or information without the concerned person's consent?",
+          "relevant_ids": [
+            "acts/information_technology_act_2000/519"
+          ],
+          "retrieved_ids": [
+            "acts/information_technology_act_2000/519",
+            "acts/information_technology_act_2000/106",
+            "acts/information_technology_act_2000/351",
+            "acts/information_technology_act_2000/212",
+            "acts/information_technology_act_2000/217",
+            "acts/information_technology_act_2000/372",
+            "acts/information_technology_act_2000/449",
+            "acts/information_technology_act_2000/573",
+            "acts/information_technology_act_2000/147",
+            "acts/information_technology_act_2000/427"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "When is an intermediary exempt from liability for third-party information under Section 79 of the IT Act, 2000?",
+          "relevant_ids": [
+            "acts/information_technology_act_2000/533"
+          ],
+          "retrieved_ids": [
+            "acts/information_technology_act_2000/533",
+            "acts/information_technology_act_2000/117",
+            "acts/information_technology_act_2000/543",
+            "acts/information_technology_act_2000/535",
+            "acts/information_technology_act_2000/536",
+            "acts/information_technology_act_2000/540",
+            "acts/information_technology_act_2000/542",
+            "acts/information_technology_act_2000/530",
+            "acts/information_technology_act_2000/424",
+            "acts/information_technology_act_2000/492"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "Under the Information Technology Act, 2000, what is the punishment for dishonestly receiving or retaining a stolen computer resource or communication device?",
+          "relevant_ids": [
+            "acts/information_technology_act_2000/454"
+          ],
+          "retrieved_ids": [
+            "acts/information_technology_act_2000/454",
+            "acts/information_technology_act_2000/89",
+            "acts/information_technology_act_2000/456",
+            "acts/information_technology_act_2000/88",
+            "acts/information_technology_act_2000/450",
+            "acts/information_technology_act_2000/91",
+            "acts/information_technology_act_2000/90",
+            "acts/information_technology_act_2000/455",
+            "acts/information_technology_act_2000/92",
+            "acts/information_technology_act_2000/382"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "What is the punishment under the IT Act, 2000 for cheating by personation by using a computer resource (Section 66D)?",
+          "relevant_ids": [
+            "acts/information_technology_act_2000/456"
+          ],
+          "retrieved_ids": [
+            "acts/information_technology_act_2000/456",
+            "acts/information_technology_act_2000/91",
+            "acts/information_technology_act_2000/89",
+            "acts/information_technology_act_2000/450",
+            "acts/information_technology_act_2000/454",
+            "acts/information_technology_act_2000/553",
+            "acts/information_technology_act_2000/382",
+            "acts/information_technology_act_2000/90",
+            "acts/information_technology_act_2000/554",
+            "acts/information_technology_act_2000/92"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "How does the IT Act, 2000 punish a person who intentionally captures or publishes the image of a private area of another person without consent (violation of privacy)?",
+          "relevant_ids": [
+            "acts/information_technology_act_2000/457"
+          ],
+          "retrieved_ids": [
+            "acts/information_technology_act_2000/457",
+            "acts/information_technology_act_2000/464",
+            "acts/information_technology_act_2000/519",
+            "acts/information_technology_act_2000/465",
+            "acts/information_technology_act_2000/382",
+            "acts/information_technology_act_2000/372",
+            "acts/information_technology_act_2000/555",
+            "acts/information_technology_act_2000/496",
+            "acts/information_technology_act_2000/524",
+            "acts/information_technology_act_2000/482"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "What is the punishment under Section 67A of the IT Act, 2000 for publishing or transmitting material containing a sexually explicit act in electronic form?",
+          "relevant_ids": [
+            "acts/information_technology_act_2000/472"
+          ],
+          "retrieved_ids": [
+            "acts/information_technology_act_2000/95",
+            "acts/information_technology_act_2000/472",
+            "acts/information_technology_act_2000/474",
+            "acts/information_technology_act_2000/478",
+            "acts/information_technology_act_2000/450",
+            "acts/information_technology_act_2000/96",
+            "acts/information_technology_act_2000/553",
+            "acts/information_technology_act_2000/94",
+            "acts/information_technology_act_2000/473",
+            "acts/information_technology_act_2000/471"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 0.5,
+          "map@3": 0.5,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 0.5,
+          "map@5": 0.5,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "map@10": 0.5
+        },
+        {
+          "query": "What does Section 67C of the IT Act, 2000 require of intermediaries regarding preservation and retention of information?",
+          "relevant_ids": [
+            "acts/information_technology_act_2000/481"
+          ],
+          "retrieved_ids": [
+            "acts/information_technology_act_2000/481",
+            "acts/information_technology_act_2000/97",
+            "acts/information_technology_act_2000/482",
+            "acts/information_technology_act_2000/585",
+            "acts/information_technology_act_2000/12",
+            "acts/information_technology_act_2000/351",
+            "acts/information_technology_act_2000/312",
+            "acts/information_technology_act_2000/532",
+            "acts/information_technology_act_2000/218",
+            "acts/information_technology_act_2000/602"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        }
+      ],
+      "zero_hit_queries": []
+    },
+    "constitution": {
+      "num_cases": 10,
+      "index_dir": "data/index",
+      "metrics_by_k": {
+        "1": {
+          "precision": 1.0,
+          "recall": 0.95,
+          "mrr": 1.0,
+          "map": 0.95
+        },
+        "3": {
+          "precision": 0.3333333333333333,
+          "recall": 0.95,
+          "mrr": 1.0,
+          "map": 0.95
+        },
+        "5": {
+          "precision": 0.2,
+          "recall": 0.95,
+          "mrr": 1.0,
+          "map": 0.95
+        },
+        "10": {
+          "precision": 0.11000000000000001,
+          "recall": 1.0,
+          "mrr": 1.0,
+          "map": 0.96
+        }
+      },
+      "per_query": [
+        {
+          "query": "What does Article 14 of the Constitution of India provide regarding equality before the law?",
+          "relevant_ids": [
+            "constitution/constitution_of_india/531"
+          ],
+          "retrieved_ids": [
+            "constitution/constitution_of_india/531",
+            "constitution/constitution_of_india/17",
+            "constitution/constitution_of_india/2418",
+            "constitution/constitution_of_india/543",
+            "constitution/constitution_of_india/19",
+            "constitution/constitution_of_india/530",
+            "constitution/constitution_of_india/632",
+            "constitution/constitution_of_india/1409",
+            "constitution/constitution_of_india/1042",
+            "constitution/constitution_of_india/3474"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "Which fundamental right of the Constitution guarantees freedom of speech and expression?",
+          "relevant_ids": [
+            "constitution/constitution_of_india/557",
+            "constitution/constitution_of_india/559"
+          ],
+          "retrieved_ids": [
+            "constitution/constitution_of_india/559",
+            "constitution/constitution_of_india/597",
+            "constitution/constitution_of_india/556",
+            "constitution/constitution_of_india/22",
+            "constitution/constitution_of_india/21",
+            "constitution/constitution_of_india/524",
+            "constitution/constitution_of_india/14",
+            "constitution/constitution_of_india/28",
+            "constitution/constitution_of_india/916",
+            "constitution/constitution_of_india/557"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 0.5,
+          "mrr@1": 1.0,
+          "map@1": 0.5,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 0.5,
+          "mrr@3": 1.0,
+          "map@3": 0.5,
+          "precision@5": 0.2,
+          "recall@5": 0.5,
+          "mrr@5": 1.0,
+          "map@5": 0.5,
+          "precision@10": 0.2,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 0.6
+        },
+        {
+          "query": "What does Article 21 of the Constitution guarantee about life and personal liberty?",
+          "relevant_ids": [
+            "constitution/constitution_of_india/581"
+          ],
+          "retrieved_ids": [
+            "constitution/constitution_of_india/581",
+            "constitution/constitution_of_india/24",
+            "constitution/constitution_of_india/3086",
+            "constitution/constitution_of_india/769",
+            "constitution/constitution_of_india/678",
+            "constitution/constitution_of_india/645",
+            "constitution/constitution_of_india/2043",
+            "constitution/constitution_of_india/1421",
+            "constitution/constitution_of_india/3576",
+            "constitution/constitution_of_india/521"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "What protection does Article 22 of the Constitution provide to a person who has been arrested?",
+          "relevant_ids": [
+            "constitution/constitution_of_india/582"
+          ],
+          "retrieved_ids": [
+            "constitution/constitution_of_india/582",
+            "constitution/constitution_of_india/26",
+            "constitution/constitution_of_india/521",
+            "constitution/constitution_of_india/1461",
+            "constitution/constitution_of_india/578",
+            "constitution/constitution_of_india/591",
+            "constitution/constitution_of_india/587",
+            "constitution/constitution_of_india/728",
+            "constitution/constitution_of_india/1334",
+            "constitution/constitution_of_india/512"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "Which Article of the Constitution lays down the procedure for amending the Constitution and what does it require?",
+          "relevant_ids": [
+            "constitution/constitution_of_india/2459"
+          ],
+          "retrieved_ids": [
+            "constitution/constitution_of_india/2459",
+            "constitution/constitution_of_india/1473",
+            "constitution/constitution_of_india/75",
+            "constitution/constitution_of_india/982",
+            "constitution/constitution_of_india/1747",
+            "constitution/constitution_of_india/1344",
+            "constitution/constitution_of_india/3652",
+            "constitution/constitution_of_india/443",
+            "constitution/constitution_of_india/645",
+            "constitution/constitution_of_india/2043"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "What does Article 15 of the Constitution prohibit regarding discrimination against citizens?",
+          "relevant_ids": [
+            "constitution/constitution_of_india/532"
+          ],
+          "retrieved_ids": [
+            "constitution/constitution_of_india/532",
+            "constitution/constitution_of_india/18",
+            "constitution/constitution_of_india/2421",
+            "constitution/constitution_of_india/595",
+            "constitution/constitution_of_india/1966",
+            "constitution/constitution_of_india/3435",
+            "constitution/constitution_of_india/2801",
+            "constitution/constitution_of_india/594",
+            "constitution/constitution_of_india/521",
+            "constitution/constitution_of_india/3489"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "What does Article 16 of the Constitution provide about equality of opportunity in matters of public employment?",
+          "relevant_ids": [
+            "constitution/constitution_of_india/543"
+          ],
+          "retrieved_ids": [
+            "constitution/constitution_of_india/543",
+            "constitution/constitution_of_india/19",
+            "constitution/constitution_of_india/2423",
+            "constitution/constitution_of_india/545",
+            "constitution/constitution_of_india/2043",
+            "constitution/constitution_of_india/531",
+            "constitution/constitution_of_india/2606",
+            "constitution/constitution_of_india/2579",
+            "constitution/constitution_of_india/1253",
+            "constitution/constitution_of_india/2511"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "What does Article 23 of the Constitution prohibit with regard to human trafficking and forced labour?",
+          "relevant_ids": [
+            "constitution/constitution_of_india/594"
+          ],
+          "retrieved_ids": [
+            "constitution/constitution_of_india/594",
+            "constitution/constitution_of_india/27",
+            "constitution/constitution_of_india/2430",
+            "constitution/constitution_of_india/595",
+            "constitution/constitution_of_india/1966",
+            "constitution/constitution_of_india/666",
+            "constitution/constitution_of_india/596",
+            "constitution/constitution_of_india/3487",
+            "constitution/constitution_of_india/521",
+            "constitution/constitution_of_india/552"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "What does Article 25 of the Constitution guarantee regarding freedom of conscience and religion?",
+          "relevant_ids": [
+            "constitution/constitution_of_india/597"
+          ],
+          "retrieved_ids": [
+            "constitution/constitution_of_india/597",
+            "constitution/constitution_of_india/29",
+            "constitution/constitution_of_india/2432",
+            "constitution/constitution_of_india/600",
+            "constitution/constitution_of_india/606",
+            "constitution/constitution_of_india/30",
+            "constitution/constitution_of_india/645",
+            "constitution/constitution_of_india/596",
+            "constitution/constitution_of_india/22",
+            "constitution/constitution_of_india/556"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        },
+        {
+          "query": "What right does Article 30 of the Constitution confer on minorities in relation to educational institutions?",
+          "relevant_ids": [
+            "constitution/constitution_of_india/612"
+          ],
+          "retrieved_ids": [
+            "constitution/constitution_of_india/612",
+            "constitution/constitution_of_india/34",
+            "constitution/constitution_of_india/613",
+            "constitution/constitution_of_india/539",
+            "constitution/constitution_of_india/537",
+            "constitution/constitution_of_india/2289",
+            "constitution/constitution_of_india/1490",
+            "constitution/constitution_of_india/32",
+            "constitution/constitution_of_india/607",
+            "constitution/constitution_of_india/401"
+          ],
+          "precision@1": 1.0,
+          "recall@1": 1.0,
+          "mrr@1": 1.0,
+          "map@1": 1.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 1.0,
+          "map@3": 1.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 1.0,
+          "map@5": 1.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "map@10": 1.0
+        }
+      ],
+      "zero_hit_queries": []
+    },
+    "judgments": {
+      "num_cases": 10,
+      "index_dir": "data/index/judgments",
+      "metrics_by_k": {
+        "1": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "mrr": 0.0,
+          "map": 0.0
+        },
+        "3": {
+          "precision": 0.06666666666666667,
+          "recall": 0.2,
+          "mrr": 0.1,
+          "map": 0.1
+        },
+        "5": {
+          "precision": 0.08,
+          "recall": 0.4,
+          "mrr": 0.145,
+          "map": 0.145
+        },
+        "10": {
+          "precision": 0.06000000000000001,
+          "recall": 0.6,
+          "mrr": 0.17357142857142857,
+          "map": 0.17357142857142857
+        }
+      },
+      "per_query": [
+        {
+          "query": "Can a court grant specific performance of a contract of employment, or declare a wrongfully dismissed employee's service as subsisting?",
+          "relevant_ids": [
+            "judgments/1004292/55"
+          ],
+          "retrieved_ids": [
+            "judgments/1058779/7",
+            "judgments/1004292/55",
+            "judgments/392907/15",
+            "judgments/392907/16",
+            "judgments/392907/21",
+            "judgments/396597/24",
+            "judgments/164945369/47",
+            "judgments/1004292/53",
+            "judgments/1908062/21",
+            "judgments/1058779/5"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 0.5,
+          "map@3": 0.5,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 0.5,
+          "map@5": 0.5,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "map@10": 0.5
+        },
+        {
+          "query": "Does a fresh cause of action arise under Section 138 of the Negotiable Instruments Act each time a dishonoured cheque is presented again?",
+          "relevant_ids": [
+            "judgments/100995424/99"
+          ],
+          "retrieved_ids": [
+            "judgments/196974768/18",
+            "judgments/463935/24",
+            "judgments/1282159/22",
+            "judgments/1745028/23",
+            "judgments/1649633/49",
+            "judgments/74908072/8",
+            "judgments/100995424/99",
+            "judgments/64050465/15",
+            "judgments/196974768/33",
+            "judgments/166793628/10"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.0,
+          "recall@3": 0.0,
+          "mrr@3": 0.0,
+          "map@3": 0.0,
+          "precision@5": 0.0,
+          "recall@5": 0.0,
+          "mrr@5": 0.0,
+          "map@5": 0.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 0.14285714285714285,
+          "map@10": 0.14285714285714285
+        },
+        {
+          "query": "What categories of cases may justify quashing criminal proceedings in the exercise of inherent powers under Section 482 of the Code of Criminal Procedure?",
+          "relevant_ids": [
+            "judgments/1033637/15"
+          ],
+          "retrieved_ids": [
+            "judgments/160278245/13",
+            "judgments/1293958/78",
+            "judgments/1465450/103",
+            "judgments/69949024/97",
+            "judgments/1465450/87",
+            "judgments/1246305/24",
+            "judgments/441539/27",
+            "judgments/106678/20",
+            "judgments/40197/42",
+            "judgments/154235297/10"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.0,
+          "recall@3": 0.0,
+          "mrr@3": 0.0,
+          "map@3": 0.0,
+          "precision@5": 0.0,
+          "recall@5": 0.0,
+          "mrr@5": 0.0,
+          "map@5": 0.0,
+          "precision@10": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "map@10": 0.0
+        },
+        {
+          "query": "Is registration of an FIR necessary before a court can entertain an application for anticipatory bail under Section 438 CrPC?",
+          "relevant_ids": [
+            "judgments/1013766/53"
+          ],
+          "retrieved_ids": [
+            "judgments/1308768/11",
+            "judgments/1839327/80",
+            "judgments/1320602/9",
+            "judgments/1839327/79",
+            "judgments/1839327/82",
+            "judgments/1308768/116",
+            "judgments/97489052/30",
+            "judgments/97489052/45",
+            "judgments/1308768/117",
+            "judgments/46219614/19"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.0,
+          "recall@3": 0.0,
+          "mrr@3": 0.0,
+          "map@3": 0.0,
+          "precision@5": 0.0,
+          "recall@5": 0.0,
+          "mrr@5": 0.0,
+          "map@5": 0.0,
+          "precision@10": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "map@10": 0.0
+        },
+        {
+          "query": "What are the essential ingredients required to establish the offence of dowry death under Section 304B of the Indian Penal Code?",
+          "relevant_ids": [
+            "judgments/114728790/24"
+          ],
+          "retrieved_ids": [
+            "judgments/333155/21",
+            "judgments/57000205/34",
+            "judgments/1192420/44",
+            "judgments/1951053/7",
+            "judgments/114728790/24",
+            "judgments/1951053/8",
+            "judgments/333155/25",
+            "judgments/69814566/22",
+            "judgments/688079/12",
+            "judgments/340104/107"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.0,
+          "recall@3": 0.0,
+          "mrr@3": 0.0,
+          "map@3": 0.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 0.2,
+          "map@5": 0.2,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 0.2,
+          "map@10": 0.2
+        },
+        {
+          "query": "In a case resting on circumstantial evidence, how complete must the chain of incriminating circumstances be before a conviction can be recorded?",
+          "relevant_ids": [
+            "judgments/1002050/11"
+          ],
+          "retrieved_ids": [
+            "judgments/1789800/12",
+            "judgments/111334/97",
+            "judgments/408848/19",
+            "judgments/698451/102",
+            "judgments/195873232/15",
+            "judgments/1537060/49",
+            "judgments/138559779/12",
+            "judgments/753911/14",
+            "judgments/698451/13",
+            "judgments/111334/98"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.0,
+          "recall@3": 0.0,
+          "mrr@3": 0.0,
+          "map@3": 0.0,
+          "precision@5": 0.0,
+          "recall@5": 0.0,
+          "mrr@5": 0.0,
+          "map@5": 0.0,
+          "precision@10": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "map@10": 0.0
+        },
+        {
+          "query": "Does the rule of res judicata under Section 11 of the Code of Civil Procedure apply to petitions filed under Article 32 of the Constitution?",
+          "relevant_ids": [
+            "judgments/1000631/83"
+          ],
+          "retrieved_ids": [
+            "judgments/1940065/22",
+            "judgments/1000631/83",
+            "judgments/1427648/36",
+            "judgments/1230975/33",
+            "judgments/1940065/19",
+            "judgments/1230975/29",
+            "judgments/1360390/17",
+            "judgments/1851717/22",
+            "judgments/485116/21",
+            "judgments/1638640/10"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.3333333333333333,
+          "recall@3": 1.0,
+          "mrr@3": 0.5,
+          "map@3": 0.5,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 0.5,
+          "map@5": 0.5,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "map@10": 0.5
+        },
+        {
+          "query": "Can an arbitral award be set aside merely on a general allegation that the arbitral tribunal did not consider certain documents?",
+          "relevant_ids": [
+            "judgments/101695797/75"
+          ],
+          "retrieved_ids": [
+            "judgments/202973/14",
+            "judgments/101695797/74",
+            "judgments/1925886/9",
+            "judgments/101695797/75",
+            "judgments/919241/3",
+            "judgments/111138435/42",
+            "judgments/49992530/26",
+            "judgments/582406/25",
+            "judgments/202973/12",
+            "judgments/1490786/12"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.0,
+          "recall@3": 0.0,
+          "mrr@3": 0.0,
+          "map@3": 0.0,
+          "precision@5": 0.2,
+          "recall@5": 1.0,
+          "mrr@5": 0.25,
+          "map@5": 0.25,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 0.25,
+          "map@10": 0.25
+        },
+        {
+          "query": "On whom does the burden of proof lie to establish a breach of policy conditions when an insurer seeks to avoid liability?",
+          "relevant_ids": [
+            "judgments/100481870/30"
+          ],
+          "retrieved_ids": [
+            "judgments/1964308/25",
+            "judgments/1827019/106",
+            "judgments/1785523/13",
+            "judgments/1751025/14",
+            "judgments/27505223/13",
+            "judgments/87600197/17",
+            "judgments/100481870/30",
+            "judgments/1889839/28",
+            "judgments/841892/34",
+            "judgments/162561015/21"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.0,
+          "recall@3": 0.0,
+          "mrr@3": 0.0,
+          "map@3": 0.0,
+          "precision@5": 0.0,
+          "recall@5": 0.0,
+          "mrr@5": 0.0,
+          "map@5": 0.0,
+          "precision@10": 0.1,
+          "recall@10": 1.0,
+          "mrr@10": 0.14285714285714285,
+          "map@10": 0.14285714285714285
+        },
+        {
+          "query": "Can a conviction be based on a dying declaration even without corroboration?",
+          "relevant_ids": [
+            "judgments/1000760/24"
+          ],
+          "retrieved_ids": [
+            "judgments/433422/19",
+            "judgments/829803/34",
+            "judgments/75666874/26",
+            "judgments/136118014/19",
+            "judgments/433422/47",
+            "judgments/1438645/59",
+            "judgments/175915536/20",
+            "judgments/829803/31",
+            "judgments/96325177/120",
+            "judgments/134631202/51"
+          ],
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "mrr@1": 0.0,
+          "map@1": 0.0,
+          "precision@3": 0.0,
+          "recall@3": 0.0,
+          "mrr@3": 0.0,
+          "map@3": 0.0,
+          "precision@5": 0.0,
+          "recall@5": 0.0,
+          "mrr@5": 0.0,
+          "map@5": 0.0,
+          "precision@10": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "map@10": 0.0
+        }
+      ],
+      "zero_hit_queries": [
+        "What categories of cases may justify quashing criminal proceedings in the exercise of inherent powers under Section 482 of the Code of Criminal Procedure?",
+        "Is registration of an FIR necessary before a court can entertain an application for anticipatory bail under Section 438 CrPC?",
+        "In a case resting on circumstantial evidence, how complete must the chain of incriminating circumstances be before a conviction can be recorded?",
+        "Can a conviction be based on a dying declaration even without corroboration?"
+      ]
+    }
+  },
+  "overall_macro": {
+    "1": {
+      "precision": 0.5333333333333333,
+      "recall": 0.5166666666666666,
+      "mrr": 0.5333333333333333,
+      "map": 0.5166666666666666
+    },
+    "3": {
+      "precision": 0.24444444444444444,
+      "recall": 0.7166666666666667,
+      "mrr": 0.6277777777777778,
+      "map": 0.611111111111111
+    },
+    "5": {
+      "precision": 0.16,
+      "recall": 0.7833333333333333,
+      "mrr": 0.6427777777777778,
+      "map": 0.6261111111111111
+    },
+    "10": {
+      "precision": 0.09000000000000001,
+      "recall": 0.8666666666666667,
+      "mrr": 0.6523015873015873,
+      "map": 0.638968253968254
+    }
+  }
+}

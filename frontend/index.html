@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LegalRAG</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>LegalRAG</h1>
+    <p class="subtitle">Evidence-grounded answers over the Acts, Constitution and Judgments corpus.</p>
+  </header>
+
+  <main>
+    <form id="ask-form">
+      <label for="question">Your legal question</label>
+      <textarea id="question" rows="3" placeholder="e.g. What does Article 21 of the Constitution guarantee?"></textarea>
+      <div class="controls">
+        <button id="ask" type="submit">Ask</button>
+        <button id="pdf" type="button" class="secondary" disabled>Download PDF</button>
+        <span id="status" class="status" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+
+    <div id="error" class="error hidden" role="alert"></div>
+
+    <section id="result" class="hidden">
+      <article class="panel">
+        <h2>Answer</h2>
+        <div id="answer" class="answer"></div>
+      </article>
+
+      <article class="panel">
+        <h2>Limitations</h2>
+        <ul id="limitations"></ul>
+      </article>
+
+      <article class="panel">
+        <h2>Cited authorities</h2>
+        <div id="evidence"></div>
+      </article>
+
+      <article class="panel">
+        <h2>Related cases</h2>
+        <div id="related"></div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>Informational output only — not legal advice. Answers are grounded in retrieved passages; substantive legal support is not automatically verified.</p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

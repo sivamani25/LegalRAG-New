@@ -37,7 +37,7 @@ data/raw/ ──► loader ──► chunker (sentence | pattern, structure-awar
                     ▼
       adaptive loop (support check → query rewrite → re-retrieve, max N rounds)
                     ▼
-   FastAPI (/query, /eval) + single-page frontend
+      FastAPI (/chat, /chat/pdf, /eval) + single-page frontend
 ```
 
 **Failure modes targeted:**
@@ -81,15 +81,15 @@ data/raw/ ──► loader ──► chunker (sentence | pattern, structure-awar
 | # | What | Status |
 |---|---|---|
 | M0 | Project skeleton, config, directory structure | ✅ |
-| M1 | Ingestion: loader, sentence + pattern chunker, SAC, pipeline | — |
-| M2 | Embedding (Nomic) + FAISS dense index + BM25 index | — |
-| M3 | Hybrid retrieval: RRF + MMR rerank + structural boost | — |
-| M4 | DRM metric + SAC on/off before/after report | — |
-| M5 | Prompt template + generation via OpenRouter + premise verification | — |
-| M6 | Adaptive retrieval loop | — |
-| M7 | Full eval harness: precision/recall/MRR/MAP, DRM, RAGAs-style, claim-level, failure tagger, embedding ablation | — |
-| M8 | FastAPI backend + single-page frontend | — |
-| M9 | README, DRM before/after numbers, end-to-end verification | — |
+| M1 | Ingestion: loader, sentence + pattern chunker, SAC, pipeline | ✅ |
+| M2 | Embedding (Nomic) + FAISS dense index + BM25 index | ✅ |
+| M3 | Hybrid retrieval: RRF + MMR rerank + structural boost | ✅ |
+| M4 | DRM metric + SAC on/off before/after report | 🔶 metrics + evaluation harness only |
+| M5 | Prompt template + generation via OpenRouter + premise verification | ✅ (citation-label verification only) |
+| M6 | Adaptive retrieval loop | 🔶 classifier + legal-issue rewriter + routing |
+| M7 | Full eval harness (precision/recall/MRR/MAP; DRM, RAGAs-style, claim-level, ablation) | 🔶 precision/recall/MRR/MAP implemented |
+| M8 | FastAPI backend (`/chat`, `/chat/pdf`, `/eval`) + single-page frontend | ✅ |
+| M9 | README, DRM before/after numbers, end-to-end verification | 🔶 in progress |
 
 ---
 
@@ -103,16 +103,25 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
-Copy `.env.example` to `.env` and fill in keys if you intend to run real
-generation. No API key is needed to run tests or to use offline modes.
+Copy `.env.example` to `.env` and set the OpenRouter key. Generation uses
+**OpenRouter only**; no API key is needed to run tests or offline modes.
 
+Linux / macOS (bash):
 ```bash
-# Generation only — key read at call time, never stored in the repo
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
 export OPENROUTER_API_KEY=sk-or-...
-
-# Optional: Ollama local LLM (set generation.provider: ollama in config.yaml)
-export OLLAMA_BASE_URL=http://localhost:11434
 ```
+
+Windows PowerShell:
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+# Put OPENROUTER_API_KEY=sk-or-... in .env (gitignored), or set it for the session:
+$env:OPENROUTER_API_KEY = "sk-or-..."
+```
+Never commit `.env`. The key is read at call time and is never returned by the API
+or embedded in the frontend/PDF.
 
 ### Run tests
 
@@ -129,6 +138,47 @@ All runtime settings live in [`config.yaml`](config.yaml). Key values:
 - `retrieval.embedding_model` — model name passed to the embedder (never hardcoded)
 - `generation.provider` — `openrouter` or `ollama`
 - `generation.model` — OpenRouter model identifier (e.g. `anthropic/claude-sonnet-4-5`)
+
+---
+
+## API, frontend and PDF export
+
+Start the API (Windows PowerShell):
+```powershell
+.\.venv\Scripts\python.exe -m legalrag.app.main
+# or: .\.venv\Scripts\python.exe -m uvicorn legalrag.app.main:app --host 127.0.0.1 --port 8000
+```
+Then open <http://127.0.0.1:8000/> for the single-page frontend.
+
+| Method | Path | Purpose |
+|---|---|---|
+| GET | `/health` | liveness + configured categories |
+| POST | `/chat` | grounded answer, citations/metadata, related cases, limitations |
+| POST | `/chat/pdf` | the same answer as a downloadable PDF |
+| GET | `/eval` | live retrieval metrics (precision/recall/MRR/MAP) via the eval harness |
+
+Demo workflow:
+```powershell
+Invoke-RestMethod http://127.0.0.1:8000/health
+$q = '{"question":"What does Article 21 of the Constitution guarantee about life and personal liberty?"}'
+Invoke-RestMethod -Method Post http://127.0.0.1:8000/chat -ContentType 'application/json' -Body $q
+Invoke-WebRequest -Method Post http://127.0.0.1:8000/chat/pdf -ContentType 'application/json' -Body $q -OutFile answer.pdf
+Invoke-RestMethod 'http://127.0.0.1:8000/eval?k=1,3,5,10'
+```
+The frontend has an **Ask** button and a **Download PDF** button (enabled after a
+successful answer). Retrieval is federated across the Acts, Constitution and
+Judgments indexes; related cases come from the Judgments index.
+
+**First-request warm-up:** the retrieval bundle (three SentenceTransformer-backed
+retrievers + the OpenRouter client) is built lazily on the first `/chat`,
+`/chat/pdf`, or `/eval` call — expect ~1 minute on the first request (model load
+plus a one-time byte-offset scan of the Judgments corpus). Later requests are fast.
+`/eval` runs live over all 30 cases and takes a few minutes.
+
+**Important:** the verifier checks only that citation *labels* (`[S1]`, `[S2]`, …)
+exist and map to retrieved passages — it does **not** establish that the legal
+content is substantively correct. Output is general legal information and is not a
+substitute for advice from a qualified lawyer.
 
 ---
 

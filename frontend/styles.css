@@ -1,0 +1,109 @@
+:root {
+  --bg: #f5f6f8;
+  --panel: #ffffff;
+  --ink: #1c2430;
+  --muted: #5b6675;
+  --accent: #2b5fd9;
+  --border: #d9dee6;
+  --error-bg: #fdecea;
+  --error-ink: #8a1f11;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.5;
+}
+
+header, main, footer { max-width: 900px; margin: 0 auto; padding: 0 18px; }
+
+header { padding-top: 28px; }
+h1 { margin: 0 0 4px; font-size: 1.6rem; }
+.subtitle { margin: 0 0 18px; color: var(--muted); }
+
+form {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+label { display: block; font-weight: 600; margin-bottom: 6px; }
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  font: inherit;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  resize: vertical;
+}
+
+.controls { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 20px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+button:disabled { opacity: 0.55; cursor: not-allowed; }
+button.secondary { background: #40506b; }
+button.secondary:disabled { background: #8b95a6; }
+
+.status { color: var(--muted); font-size: 0.9rem; }
+
+.hidden { display: none !important; }
+
+.error {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--error-bg);
+  color: var(--error-ink);
+  border: 1px solid #f3c2ba;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 16px;
+}
+.panel h2 { margin: 0 0 10px; font-size: 1.1rem; }
+
+.answer { white-space: pre-wrap; }
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #fbfcfe;
+}
+.card .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 6px; }
+.card .label {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 5px;
+  padding: 0 7px;
+  margin-right: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.card .text { white-space: pre-wrap; font-size: 0.93rem; }
+
+ul { margin: 0; padding-left: 18px; }
+li { margin-bottom: 6px; }
+
+footer { color: var(--muted); font-size: 0.85rem; padding: 22px 18px 30px; }
